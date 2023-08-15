@@ -1,0 +1,42 @@
+.courseCard {
+    display: flex;
+    background-color: #FFF;
+    stroke-width: 1px;
+    stroke: rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    border-left: solid #333E48 7px;
+    width: 1100px;
+    height: 240px;
+    margin: 32px auto;
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    color: #333E48;
+}
+
+.descriptionBlock {
+    width: 677px;
+    padding: 21px 47px 35px 31px;
+}
+.descriptionBlockTitle {
+    color: #000;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 32px;
+    text-transform: capitalize;
+    padding-bottom: 10px;
+}
+
+.infoBlockTitle {
+    font-weight: 700;
+}
+
+.infoBlock {
+    padding: 63px 31px 35px 0;
+}
+
+.infoBlock button{
+    margin-top: 31px;
+}

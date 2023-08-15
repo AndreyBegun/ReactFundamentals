@@ -1,24 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import { Header } from './components/Header/Header';
+import EmptyCourseList from './components/EmptyCourseList/EmptyCourseList';
+import Courses from './components/Courses/Courses';
+import { mockedCoursesList } from './constants';
+import CourseInfo from './components/CourseInfo/CourseInfo';
+import { getCourseById } from './helpers/getCoursById';
 
 function App() {
+	const [courseId, setCourseId] = useState(null);
+	const showCourseHandler = (id) => {
+		return setCourseId(id);
+	};
+	const backHandler = () => setCourseId(null);
 	return (
-		<div className='App'>
-			<header className='App-header'>
-				<img src={logo} className='App-logo' alt='logo' />
-				<p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<a
-					className='App-link'
-					href='https://reactjs.org'
-					target='_blank'
-					rel='noopener noreferrer'
-				>
-					Learn React
-				</a>
-			</header>
-		</div>
+		<>
+			<Header />
+			{mockedCoursesList.length == 0 ? (
+				<EmptyCourseList />
+			) : courseId ? (
+				<CourseInfo {...getCourseById(courseId)} onBtnClick={backHandler} />
+			) : (
+				<Courses
+					coursesList={mockedCoursesList}
+					onShowCourse={showCourseHandler}
+				/>
+			)}
+		</>
 	);
 }
 

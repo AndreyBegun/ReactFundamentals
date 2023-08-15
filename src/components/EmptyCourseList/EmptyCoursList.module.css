@@ -1,0 +1,19 @@
+.emptyListCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 90vh;
+    align-items: center;
+}
+.emptyListCardTitle {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 40px;
+    text-transform: capitalize;
+}
+.emptyListCardText {
+    margin: 24px auto 40px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    }

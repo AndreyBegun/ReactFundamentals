@@ -1,0 +1,67 @@
+.courseInfo {
+
+    width: 1100px;
+    margin: 32px auto;
+}
+
+.title {
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 40px;
+    text-transform: capitalize;
+    margin-bottom: 23px;
+}
+.courseCard {
+    display: flex;
+    background-color: #FFF;
+    stroke-width: 1px;
+    height: 375px;
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    color: #333E48;
+}
+.descriptionBlock {
+    width: 490px;
+    padding: 53px 32px 53px 64px;
+}
+.infoBlockLine {
+    display: flex;
+    margin-top: 16px;
+}
+.descriptionBlockTitle {
+    color: #000;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 32px;
+    text-transform: capitalize;
+    padding-bottom: 10px;
+}
+.infoBlock {
+    border-left: solid #CFCFCF 1px;
+    padding: 15px 32px 0 32px;
+    margin: 73px 0 99px;
+}
+
+.infoBlockTitle {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 32px;
+    text-transform: capitalize;
+    width: 130px;
+
+}
+
+
+.infoBlock button{
+    margin-top: 31px;
+}
+.buttonWraper {
+    margin-top: 46px;
+
+    display: flex;
+    justify-content: flex-end;
+}
