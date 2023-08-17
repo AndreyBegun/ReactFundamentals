@@ -16,7 +16,7 @@ function App() {
 	return (
 		<>
 			<Header />
-			{mockedCoursesList.length == 0 ? (
+			{!mockedCoursesList && !mockedCoursesList.length ? (
 				<EmptyCourseList />
 			) : courseId ? (
 				<CourseInfo {...getCourseById(courseId)} onBtnClick={backHandler} />

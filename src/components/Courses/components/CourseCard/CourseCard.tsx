@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './CourseCard.module.css';
 import Button from 'src/common/Button/Button';
 import { AUTHORS, BTN_SHOW_COURSE, CREATED, DURATION } from 'src/constants';
+import getCourseDuration from 'src/helpers/getCourseDuration';
 
 interface CourseCardProps {
 	title?: string;
@@ -32,7 +33,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
 			</div>
 			<div>
 				<span className={styles.infoBlockTitle}>{DURATION}</span>
-				<span>{duration}</span>
+				<span>{getCourseDuration(duration)}</span>
 			</div>
 			<div>
 				<span className={styles.infoBlockTitle}>{CREATED}</span>

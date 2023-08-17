@@ -10,6 +10,7 @@ import {
 	DURATION,
 	ID,
 } from 'src/constants';
+import getCourseDuration from 'src/helpers/getCourseDuration';
 
 interface CourseInfoProps {
 	id?: string;
@@ -45,7 +46,7 @@ const CourseInfo: React.FC<CourseInfoProps> = ({
 				</div>
 				<div className={styles.infoBlockLine}>
 					<span className={styles.infoBlockTitle}>{DURATION}</span>
-					<span>{duration}</span>
+					<span>{getCourseDuration(duration)}</span>
 				</div>
 				<div className={styles.infoBlockLine}>
 					<span className={styles.infoBlockTitle}>{CREATED}</span>

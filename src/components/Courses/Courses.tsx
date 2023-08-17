@@ -5,6 +5,7 @@ import Button from 'src/common/Button/Button';
 import SearchBar from './components/SearchBar/SearchBar';
 import styles from './Courses.module.css';
 import { BTN_ADD_COURSE } from 'src/constants';
+import getCourseDuration from 'src/helpers/getCourseDuration';
 
 interface Course {
 	id: string;

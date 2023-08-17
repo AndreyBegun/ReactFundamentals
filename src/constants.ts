@@ -68,3 +68,5 @@ export const DURATION = 'Duration: ';
 export const CREATED = 'Created: ';
 export const DESCRIPTION = 'Description:';
 export const ID = 'ID:';
+export const HOURS = ' hours';
+export const HOUR = ' hour';
