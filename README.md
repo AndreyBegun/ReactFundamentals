@@ -73,3 +73,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 email: "andrei_biahun+1@epam.com"
 name: "Andrei Biahun"
 password: "123Qwert!"
+
+### Backend run
+Clone repo with a server https://git.epam.com/Yevhenii_Dubrovskyi/courses-app-backend.
+
+Go to server project folder, install dependencies (npm install) and run server:
+npm install
+npm run start
+
+Now you have a backend for your application on the url: http://localhost:4000/api
