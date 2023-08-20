@@ -5,7 +5,6 @@ import Button from 'src/common/Button/Button';
 import SearchBar from './components/SearchBar/SearchBar';
 import styles from './Courses.module.css';
 import { BTN_ADD_COURSE } from 'src/constants';
-import getCourseDuration from 'src/helpers/getCourseDuration';
 
 interface Course {
 	id: string;
@@ -18,9 +17,8 @@ interface Course {
 
 interface CoursesProps {
 	coursesList: Course[];
-	onShowCourse: (id: string) => void;
 }
-const Courses: React.FC<CoursesProps> = ({ coursesList, onShowCourse }) => {
+const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
 	const [courses, setCourses] = useState(coursesList);
 	const [searchInputText, setSearchInputText] = useState('');
 
@@ -58,15 +56,15 @@ const Courses: React.FC<CoursesProps> = ({ coursesList, onShowCourse }) => {
 				/>
 			</div>
 			<ul>
-				{courses.map((course) => (
+				{courses?.map((course) => (
 					<CourseCard
 						key={course.id}
+						id={course.id}
 						title={course.title}
 						description={course.description}
 						authors={getAuthors(course.authors)}
 						duration={course.duration}
 						creationDate={course.creationDate}
-						onShowCourse={() => onShowCourse(course.id)}
 					/>
 				))}
 			</ul>

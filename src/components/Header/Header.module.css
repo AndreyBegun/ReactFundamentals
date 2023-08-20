@@ -5,3 +5,12 @@
     background: #FFF;
     box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.15);
 }
+.logout {
+    display: flex;
+    gap: 26px;
+    align-items: center;
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+}

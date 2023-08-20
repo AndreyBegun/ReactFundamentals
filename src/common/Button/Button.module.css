@@ -13,3 +13,6 @@
     text-transform: uppercase;
     color: #FFF;
 }
+.button:hover {
+    cursor: pointer;
+}

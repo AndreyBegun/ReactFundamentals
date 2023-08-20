@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FC, InputHTMLAttributes } from 'react';
 import styles from './Input.module.css';
+import { INPUT_PLACEHOLDER } from 'src/constants';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -15,7 +16,12 @@ const Input: FC<InputProps> = (props) => {
 					{label}
 				</label>
 			)}
-			<input className={styles.input} id={label} {...props} />
+			<input
+				className={styles.input}
+				id={label}
+				placeholder={INPUT_PLACEHOLDER}
+				{...props}
+			/>
 			{!!error && <p className={styles.error}>{error}</p>}
 		</div>
 	);
