@@ -8,10 +8,12 @@ import CourseInfo from './components/CourseInfo/CourseInfo';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './components/Login/Login';
 import Registration from './components/Registration/Registration';
+import CreateCours from './components/CreateCourse/CreateCourse';
 
 function App() {
 	// Check if token exists in localStorage
 	const token = localStorage.getItem('token');
+
 	return (
 		<>
 			<Header />
@@ -20,7 +22,7 @@ function App() {
 					<Route
 						path='/courses'
 						element={
-							!list && !list.length ? (
+							!list || !list.length ? (
 								<EmptyCourseList />
 							) : (
 								<Courses coursesList={list} />
@@ -29,6 +31,7 @@ function App() {
 					/>
 				)}
 				<Route path='/courses/:courseId' element={<CourseInfo />} />
+				<Route path='/courses/add' element={<CreateCours />} />
 
 				<Route path='/registration' element={<Registration />} />
 				<Route path='/login' element={<Login />} />

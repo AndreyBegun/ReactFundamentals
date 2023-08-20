@@ -5,6 +5,7 @@ import Button from 'src/common/Button/Button';
 import SearchBar from './components/SearchBar/SearchBar';
 import styles from './Courses.module.css';
 import { BTN_ADD_COURSE } from 'src/constants';
+import { Link } from 'react-router-dom';
 
 interface Course {
 	id: string;
@@ -50,10 +51,9 @@ const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
 					onInputChange={onSearchInputChangeHandler}
 					onSearch={onSerchHandler}
 				/>
-				<Button
-					buttonText={BTN_ADD_COURSE}
-					onClick={() => alert(BTN_ADD_COURSE)}
-				/>
+				<Link to='/courses/add'>
+					<Button buttonText={BTN_ADD_COURSE} />
+				</Link>
 			</div>
 			<ul>
 				{courses?.map((course) => (

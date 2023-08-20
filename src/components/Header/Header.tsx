@@ -4,33 +4,13 @@ import React, { useState, useEffect } from 'react';
 import styles from './Header.module.css';
 import { BTN_LOGIN, BTN_LOGOUT } from 'src/constants';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useGetUser from 'src/helpers/useGetUser';
 
 export const Header: React.FC = () => {
 	const token = localStorage.getItem('token');
 	const location = useLocation();
 	const navigate = useNavigate();
-
-	const [user, setUser] = useState(null);
-
-	useEffect(() => {
-		if (token) {
-			// Fetch user information using the token
-			fetch('http://localhost:4000/users/me', {
-				method: 'GET',
-				headers: {
-					Authorization: token,
-				},
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					console.log(data);
-					setUser(data.result); // Set user information in state
-				})
-				.catch((error) => {
-					console.error('Error fetching user:', error);
-				});
-		}
-	}, [token]);
+	const user = useGetUser();
 
 	const ifNotLoginPage =
 		location.pathname !== '/login' && location.pathname !== '/registration';
@@ -48,7 +28,7 @@ export const Header: React.FC = () => {
 			{ifNotLoginPage &&
 				(token ? (
 					<span className={styles.logout}>
-						{user?.name}
+						{user && user?.name}
 						<Button buttonText={BTN_LOGOUT} onClick={handleLogout} />
 					</span>
 				) : (
