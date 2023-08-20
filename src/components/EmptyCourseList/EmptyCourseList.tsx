@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './EmptyCoursList.module.css';
 import Button from 'src/common/Button/Button';
 import {
@@ -9,30 +9,17 @@ import {
 import { Link } from 'react-router-dom';
 import useGetUser from 'src/helpers/useGetUser';
 
-const EmptyCourseList: React.FC = () => {
-	// 	const token = localStorage.getItem('token');
-	// const [user, setUser] = useState(null);
-	const user = useGetUser();
-	const isAdmin = (user) => user?.role === 'admin';
+type UserData = {
+	email: string;
+	id: string;
+	name: string;
+	password: string;
+	role: string;
+};
 
-	// useEffect(() => {
-	// 	if (token) {
-	// 		// Fetch user information using the token
-	// 		fetch('http://localhost:4000/users/me', {
-	// 			method: 'GET',
-	// 			headers: {
-	// 				Authorization: token,
-	// 			},
-	// 		})
-	// 			.then((response) => response.json())
-	// 			.then((data) => {
-	// 				setUser(data.result); // Set user information in state
-	// 			})
-	// 			.catch((error) => {
-	// 				console.error('Error fetching user:', error);
-	// 			});
-	// 	}
-	// }, [token]);
+const EmptyCourseList: React.FC = () => {
+	const user = useGetUser();
+	const isAdmin = (user: UserData) => user?.role === 'admin';
 
 	return (
 		<div className={styles.emptyListCard}>

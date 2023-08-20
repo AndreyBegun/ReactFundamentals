@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './AuthorItem.module.css';
 import {
 	ADD_AUTHOR_NAME,
