@@ -12,4 +12,8 @@
     line-height: 24px;
     text-transform: uppercase;
     color: #FFF;
+    height: fit-content;
+}
+.button:hover {
+    cursor: pointer;
 }

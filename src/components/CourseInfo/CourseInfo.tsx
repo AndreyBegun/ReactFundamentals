@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'src/common/Button/Button';
 import styles from './CourseInfo.module.css';
 import { getAuthors } from 'src/helpers/getAuthors';
@@ -11,6 +11,8 @@ import {
 	ID,
 } from 'src/constants';
 import getCourseDuration from 'src/helpers/getCourseDuration';
+import { getCourseById } from 'src/helpers/getCoursById';
+import { Link, useParams } from 'react-router-dom';
 
 interface CourseInfoProps {
 	id?: string;
@@ -19,49 +21,54 @@ interface CourseInfoProps {
 	authors?: string[];
 	duration?: number;
 	creationDate?: string;
-	onBtnClick: () => void;
 }
 
-const CourseInfo: React.FC<CourseInfoProps> = ({
-	id,
-	title,
-	description,
-	authors,
-	duration,
-	creationDate,
-	onBtnClick,
-}) => (
-	<div className={styles.courseInfo}>
-		<div className={styles.title}>{title}</div>
-		<div className={styles.courseCard}>
-			<div className={styles.descriptionBlock}>
-				<div className={styles.descriptionBlockTitle}>{DESCRIPTION}</div>
-				<div>{description}</div>
-			</div>
+const CourseInfo: React.FC<CourseInfoProps> = () => {
+	const [courseInfo, setCourseInfo] = useState(({} as CourseInfoProps) || null);
+	const { courseId } = useParams();
 
-			<div className={styles.infoBlock}>
-				<div className={styles.infoBlockLine}>
-					<div className={styles.infoBlockTitle}>{ID}</div>
-					<span>{id}</span>
+	useEffect(() => {
+		const course = getCourseById(courseId);
+		setCourseInfo(course);
+	}, [courseId]);
+
+	return (
+		courseInfo && (
+			<div className={styles.courseInfo}>
+				<div className={styles.title}>{courseInfo?.title}</div>
+				<div className={styles.courseCard}>
+					<div className={styles.descriptionBlock}>
+						<div className={styles.descriptionBlockTitle}>{DESCRIPTION}</div>
+						<div>{courseInfo?.description}</div>
+					</div>
+
+					<div className={styles.infoBlock}>
+						<div className={styles.infoBlockLine}>
+							<div className={styles.infoBlockTitle}>{ID}</div>
+							<span>{courseInfo?.id}</span>
+						</div>
+						<div className={styles.infoBlockLine}>
+							<span className={styles.infoBlockTitle}>{DURATION}</span>
+							<span>{getCourseDuration(courseInfo?.duration)}</span>
+						</div>
+						<div className={styles.infoBlockLine}>
+							<span className={styles.infoBlockTitle}>{CREATED}</span>
+							<span>{courseInfo?.creationDate}</span>
+						</div>
+						<div className={styles.infoBlockLine}>
+							<span className={styles.infoBlockTitle}>{AUTHORS}</span>
+							<span>{getAuthors(courseInfo?.authors)}</span>
+						</div>
+					</div>
 				</div>
-				<div className={styles.infoBlockLine}>
-					<span className={styles.infoBlockTitle}>{DURATION}</span>
-					<span>{getCourseDuration(duration)}</span>
-				</div>
-				<div className={styles.infoBlockLine}>
-					<span className={styles.infoBlockTitle}>{CREATED}</span>
-					<span>{creationDate}</span>
-				</div>
-				<div className={styles.infoBlockLine}>
-					<span className={styles.infoBlockTitle}>{AUTHORS}</span>
-					<span>{getAuthors(authors)}</span>
+				<div className={styles.buttonWraper}>
+					<Link to='/courses'>
+						<Button buttonText={BTN_BACK} />
+					</Link>
 				</div>
 			</div>
-		</div>
-		<div className={styles.buttonWraper}>
-			<Button buttonText={BTN_BACK} onClick={onBtnClick} />
-		</div>
-	</div>
-);
+		)
+	);
+};
 
 export default CourseInfo;

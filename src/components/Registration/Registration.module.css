@@ -1,0 +1,45 @@
+.title {
+    color: #333E48;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 40px;
+    text-transform: capitalize;
+    margin-top: 200px;
+}
+
+.block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form {display: flex;
+    flex-direction: column;
+    gap: 34px;
+    width: 285px;
+    border-radius: 4px;
+    border: 1px solid #CFCFCF;
+    background: #FFF;
+    padding: 77px 150px 60px;
+}
+
+.form input {
+    width: -webkit-fill-available;
+}
+.form  button {
+    width: -webkit-fill-available;
+}
+.footer {
+    text-align: center;
+}
+
+.form a {
+    color: #333E48;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: #FFF;
+    text-transform: capitalize;
+}
+.serverError {
+    color: #F00; 
+}

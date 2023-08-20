@@ -1,13 +1,13 @@
-import React, { ChangeEvent, FC, InputHTMLAttributes } from 'react';
-import styles from './Input.module.css';
+import React, { ChangeEvent, FC, TextareaHTMLAttributes } from 'react';
+import styles from './TextArea.module.css';
 import { INPUT_PLACEHOLDER } from 'src/constants';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+	onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 	label?: string;
 	error?: string;
 }
-const Input: FC<InputProps> = (props) => {
+const TextArea: FC<TextAreaProps> = (props) => {
 	const { label, error } = props;
 	return (
 		<div>
@@ -16,7 +16,7 @@ const Input: FC<InputProps> = (props) => {
 					{label}
 				</label>
 			)}
-			<input
+			<textarea
 				className={styles.input}
 				id={label}
 				placeholder={INPUT_PLACEHOLDER}
@@ -27,4 +27,4 @@ const Input: FC<InputProps> = (props) => {
 	);
 };
 
-export default Input;
+export default TextArea;

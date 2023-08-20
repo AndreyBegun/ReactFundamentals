@@ -1,0 +1,41 @@
+.root {
+    width: 760px;
+}
+.inputBlock {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+}
+.inputBlock input {
+    width: 400px !important;
+}
+.authorsList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+}
+.listTitle {
+    color:  #333E48;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 20px;
+    margin-bottom: 0;
+
+}
+.authorName {
+    display: inline-block;
+    width: 150px;
+    color:#333E48;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+
+}
+.plussButton {
+    margin-right: 8px;
+    cursor: pointer;
+}
+.trashButton {
+    cursor: pointer;
+}

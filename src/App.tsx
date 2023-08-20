@@ -1,31 +1,43 @@
 import './App.css';
-import React, { useState } from 'react';
+import React from 'react';
 import { Header } from './components/Header/Header';
 import EmptyCourseList from './components/EmptyCourseList/EmptyCourseList';
 import Courses from './components/Courses/Courses';
-import { mockedCoursesList } from './constants';
+import { mockedCoursesList as list } from './constants';
 import CourseInfo from './components/CourseInfo/CourseInfo';
-import { getCourseById } from './helpers/getCoursById';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Login from './components/Login/Login';
+import Registration from './components/Registration/Registration';
+import CreateCours from './components/CreateCourse/CreateCourse';
 
 function App() {
-	const [courseId, setCourseId] = useState(null);
-	const showCourseHandler = (id) => {
-		return setCourseId(id);
-	};
-	const backHandler = () => setCourseId(null);
+	// Check if token exists in localStorage
+	const token = localStorage.getItem('token');
+
 	return (
 		<>
 			<Header />
-			{!mockedCoursesList && !mockedCoursesList.length ? (
-				<EmptyCourseList />
-			) : courseId ? (
-				<CourseInfo {...getCourseById(courseId)} onBtnClick={backHandler} />
-			) : (
-				<Courses
-					coursesList={mockedCoursesList}
-					onShowCourse={showCourseHandler}
-				/>
-			)}
+			<Routes>
+				{token && (
+					<Route
+						path='/courses'
+						element={
+							!list || !list.length ? (
+								<EmptyCourseList />
+							) : (
+								<Courses coursesList={list} />
+							)
+						}
+					/>
+				)}
+				<Route path='/courses/:courseId' element={<CourseInfo />} />
+				<Route path='/courses/add' element={<CreateCours />} />
+
+				<Route path='/registration' element={<Registration />} />
+				<Route path='/login' element={<Login />} />
+
+				<Route path='*' element={<Navigate to='/courses' />} />
+			</Routes>
 		</>
 	);
 }
