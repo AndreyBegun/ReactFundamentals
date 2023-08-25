@@ -44,7 +44,9 @@ const CreateCours = () => {
 		authorsList.push(id);
 		setfFormValue((prevVal) => ({
 			...prevVal,
-			[ADD_AUTHORS]: authorsList,
+			[ADD_AUTHORS]: authorsList.filter(
+				(val, i, self) => self.indexOf(val) == i
+			),
 		}));
 	};
 	const handleDeleteAuthor = (id: string) => {
@@ -170,9 +172,9 @@ const CreateCours = () => {
 								<h4 className={styles.sectionTitle}>Course Authors</h4>
 								{formValue[ADD_AUTHORS].length ? (
 									<>
-										{getAuthors(formValue[ADD_AUTHORS]).map((author) => (
-											<div>{author}</div>
-										))}
+										{getAuthors(formValue[ADD_AUTHORS]).map((author) => {
+											return <div key={author}>{author}</div>;
+										})}
 									</>
 								) : (
 									<div>Author list is empty</div>

@@ -25,7 +25,9 @@ const AuthorsItem: FC<AuthorsItemProps> = ({ onAddAuthor, onDeleteAuthor }) => {
 		setInputValue(e.target.value);
 	};
 
-	const onCreateAuthor = () => {
+	const onCreateAuthor = (e) => {
+		e.preventDefault();
+
 		let validationError = '';
 		if (inputValue.length < 2) {
 			validationError = `Author name is required`;
