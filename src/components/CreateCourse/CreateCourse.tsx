@@ -15,6 +15,8 @@ import { useNavigate } from 'react-router-dom';
 import AuthorsItem from './components/AuthorItem/AuthorItem';
 import { getAuthors } from 'src/helpers/getAuthors';
 import generateRandomId from 'src/helpers/generateRandomId';
+import { addNewCourseAction } from 'src/store/courses/actions';
+import { useDispatch } from 'react-redux';
 
 interface CoursAddFormData {
 	title: string;
@@ -25,6 +27,7 @@ interface CoursAddFormData {
 
 const CreateCours = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const [formValue, setfFormValue] = useState<CoursAddFormData>({
 		[ADD_TITLE]: '',
@@ -84,11 +87,13 @@ const CreateCours = () => {
 		setFormErrors(validationErrors);
 
 		if (Object.keys(validationErrors).length === 0) {
-			mockedCoursesList.push({
-				...formValue,
-				id: generateRandomId(),
-				creationDate: getFormattedDate(),
-			});
+			dispatch(
+				addNewCourseAction({
+					...formValue,
+					id: generateRandomId(),
+					creationDate: getFormattedDate(),
+				})
+			);
 			navigate('/courses');
 		}
 		// registration user request

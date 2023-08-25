@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import CourseCard from './components/CourseCard/CourseCard';
 import { getAuthors } from 'src/helpers/getAuthors';
 import Button from 'src/common/Button/Button';
@@ -20,8 +20,12 @@ interface CoursesProps {
 	coursesList: Course[];
 }
 const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
-	const [courses, setCourses] = useState(coursesList);
+	const [courses, setCourses] = useState([]);
 	const [searchInputText, setSearchInputText] = useState('');
+
+	useEffect(() => {
+		setCourses(coursesList);
+	}, [coursesList]);
 
 	const onSearchInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
 		setSearchInputText(e.target.value);
@@ -33,12 +37,8 @@ const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
 		} else {
 			serchRes = coursesList.filter(
 				(course) =>
-					course.title
-						.toLocaleLowerCase()
-						.includes(searchInputText.toLocaleLowerCase()) ||
-					course.id
-						.toLocaleLowerCase()
-						.includes(searchInputText.toLocaleLowerCase())
+					course.title.toLowerCase().includes(searchInputText.toLowerCase()) ||
+					course.id.toLowerCase().includes(searchInputText.toLowerCase())
 			);
 		}
 		return setCourses(serchRes);

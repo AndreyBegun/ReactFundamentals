@@ -4,6 +4,7 @@ import Button from 'src/common/Button/Button';
 import { AUTHORS, BTN_SHOW_COURSE, CREATED, DURATION } from 'src/constants';
 import getCourseDuration from 'src/helpers/getCourseDuration';
 import { Link } from 'react-router-dom';
+import DeleteCourseButton from 'src/common/DeleteCourseButton/DeleteCourseButton';
 
 interface CourseCardProps {
 	id?: string;
@@ -40,9 +41,12 @@ const CourseCard: React.FC<CourseCardProps> = ({
 				<span className={styles.infoBlockTitle}>{CREATED}</span>
 				<span>{creationDate}</span>
 			</div>
-			<Link to={`/courses/${id}`}>
-				<Button buttonText={BTN_SHOW_COURSE} />
-			</Link>
+			<div className={styles.infoBlockButtons}>
+				<Link to={`/courses/${id}`}>
+					<Button buttonText={BTN_SHOW_COURSE} />
+				</Link>
+				<DeleteCourseButton id={id} />
+			</div>
 		</div>
 	</li>
 );

@@ -23,7 +23,6 @@ function App() {
 
 	// const courses = [];
 	const courses = useSelector((state: RootState) => state?.courses);
-
 	return (
 		<>
 			<Header />

@@ -36,7 +36,8 @@
 .infoBlock {
     padding: 63px 31px 35px 0;
 }
-
-.infoBlock button{
+.infoBlockButtons {    
+    display: flex;
+    gap: 10px;
     margin-top: 31px;
 }
