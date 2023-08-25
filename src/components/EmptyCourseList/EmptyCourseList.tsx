@@ -7,7 +7,8 @@ import {
 	EMPTY_LIST_DESCRIPTION,
 } from 'src/constants';
 import { Link } from 'react-router-dom';
-import useGetUser from 'src/helpers/useGetUser';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/store/rootReducer';
 
 type UserData = {
 	email: string;
@@ -18,7 +19,7 @@ type UserData = {
 };
 
 const EmptyCourseList: React.FC = () => {
-	const user = useGetUser();
+	const user = useSelector((state: RootState) => state?.user);
 	const isAdmin = (user: UserData) => user?.role === 'admin';
 
 	return (

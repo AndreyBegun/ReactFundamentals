@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Button from 'src/common/Button/Button';
 import styles from './CourseInfo.module.css';
 import { getAuthors } from 'src/helpers/getAuthors';
@@ -11,10 +11,12 @@ import {
 	ID,
 } from 'src/constants';
 import getCourseDuration from 'src/helpers/getCourseDuration';
-import { getCourseById } from 'src/helpers/getCoursById';
+import useGetCourseById from 'src/helpers/getCoursById';
 import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/store/rootReducer';
 
-interface CourseInfoProps {
+export interface CourseInfoProps {
 	id?: string;
 	title?: string;
 	description?: string;
@@ -24,13 +26,9 @@ interface CourseInfoProps {
 }
 
 const CourseInfo: React.FC<CourseInfoProps> = () => {
-	const [courseInfo, setCourseInfo] = useState(({} as CourseInfoProps) || null);
 	const { courseId } = useParams();
-
-	useEffect(() => {
-		const course = getCourseById(courseId);
-		setCourseInfo(course);
-	}, [courseId]);
+	const courseInfo = useGetCourseById(courseId);
+	const authors = useSelector((state: RootState) => state?.authors);
 
 	return (
 		courseInfo && (
@@ -57,7 +55,9 @@ const CourseInfo: React.FC<CourseInfoProps> = () => {
 						</div>
 						<div className={styles.infoBlockLine}>
 							<span className={styles.infoBlockTitle}>{AUTHORS}</span>
-							<span>{getAuthors(courseInfo?.authors)}</span>
+							<span>
+								{getAuthors(courseInfo?.authors, authors)?.toString()}
+							</span>
 						</div>
 					</div>
 				</div>

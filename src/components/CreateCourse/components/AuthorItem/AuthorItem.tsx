@@ -1,15 +1,14 @@
 import React, { FC, useState } from 'react';
 import styles from './AuthorItem.module.css';
-import {
-	ADD_AUTHOR_NAME,
-	ADD_BTN_CRT_AUTHOR,
-	mockedAuthorsList,
-} from 'src/constants';
+import { ADD_AUTHOR_NAME, ADD_BTN_CRT_AUTHOR } from 'src/constants';
 import Button from 'src/common/Button/Button';
 import Input from 'src/common/Input/Input';
 import pluss from '../../../../assets/pluss.svg';
 import trash from '../../../../assets/trash.svg';
 import generateRandomId from 'src/helpers/generateRandomId';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'src/store/rootReducer';
+import { addAuthorAction } from 'src/store/authors/actions';
 
 interface AuthorsItemProps {
 	onAddAuthor: (id: string) => void;
@@ -17,7 +16,9 @@ interface AuthorsItemProps {
 }
 
 const AuthorsItem: FC<AuthorsItemProps> = ({ onAddAuthor, onDeleteAuthor }) => {
-	const [authors, setAuthors] = useState(mockedAuthorsList);
+	const dispatch = useDispatch();
+	const authors = useSelector((state: RootState) => state?.authors);
+
 	const [inputValue, setInputValue] = useState('');
 	const [error, setError] = useState('');
 
@@ -25,17 +26,16 @@ const AuthorsItem: FC<AuthorsItemProps> = ({ onAddAuthor, onDeleteAuthor }) => {
 		setInputValue(e.target.value);
 	};
 
-	const onCreateAuthor = () => {
+	const onCreateAuthor = (e) => {
+		e.preventDefault();
+
 		let validationError = '';
 		if (inputValue.length < 2) {
 			validationError = `Author name is required`;
 		}
 		setError(validationError);
 		if (!validationError) {
-			setAuthors((prevList) => [
-				...prevList,
-				{ id: generateRandomId(), name: inputValue },
-			]);
+			dispatch(addAuthorAction({ name: inputValue, id: generateRandomId() }));
 			setInputValue('');
 		}
 	};

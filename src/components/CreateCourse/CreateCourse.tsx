@@ -5,7 +5,6 @@ import {
 	ADD_DESCRIPTION,
 	ADD_DURATION,
 	ADD_TITLE,
-	mockedCoursesList,
 } from 'src/constants';
 import Input from 'src/common/Input/Input';
 import TextArea from 'src/common/TextArea/TextArea';
@@ -15,6 +14,9 @@ import { useNavigate } from 'react-router-dom';
 import AuthorsItem from './components/AuthorItem/AuthorItem';
 import { getAuthors } from 'src/helpers/getAuthors';
 import generateRandomId from 'src/helpers/generateRandomId';
+import { addNewCourseAction } from 'src/store/courses/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'src/store/rootReducer';
 
 interface CoursAddFormData {
 	title: string;
@@ -25,6 +27,8 @@ interface CoursAddFormData {
 
 const CreateCours = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const authorsState = useSelector((state: RootState) => state?.authors);
 
 	const [formValue, setfFormValue] = useState<CoursAddFormData>({
 		[ADD_TITLE]: '',
@@ -44,7 +48,9 @@ const CreateCours = () => {
 		authorsList.push(id);
 		setfFormValue((prevVal) => ({
 			...prevVal,
-			[ADD_AUTHORS]: authorsList,
+			[ADD_AUTHORS]: authorsList.filter(
+				(val, i, self) => self.indexOf(val) == i
+			),
 		}));
 	};
 	const handleDeleteAuthor = (id: string) => {
@@ -82,11 +88,13 @@ const CreateCours = () => {
 		setFormErrors(validationErrors);
 
 		if (Object.keys(validationErrors).length === 0) {
-			mockedCoursesList.push({
-				...formValue,
-				id: generateRandomId(),
-				creationDate: getFormattedDate(),
-			});
+			dispatch(
+				addNewCourseAction({
+					...formValue,
+					id: generateRandomId(),
+					creationDate: getFormattedDate(),
+				})
+			);
 			navigate('/courses');
 		}
 		// registration user request
@@ -170,9 +178,11 @@ const CreateCours = () => {
 								<h4 className={styles.sectionTitle}>Course Authors</h4>
 								{formValue[ADD_AUTHORS].length ? (
 									<>
-										{getAuthors(formValue[ADD_AUTHORS]).map((author) => (
-											<div>{author}</div>
-										))}
+										{getAuthors(formValue[ADD_AUTHORS], authorsState).map(
+											(author) => {
+												return <div key={author}>{author}</div>;
+											}
+										)}
 									</>
 								) : (
 									<div>Author list is empty</div>

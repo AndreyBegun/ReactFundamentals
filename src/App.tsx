@@ -1,18 +1,29 @@
 import './App.css';
 import React from 'react';
-import { Header } from './components/Header/Header';
-import EmptyCourseList from './components/EmptyCourseList/EmptyCourseList';
-import Courses from './components/Courses/Courses';
-import { mockedCoursesList as list } from './constants';
-import CourseInfo from './components/CourseInfo/CourseInfo';
+
+import { useGetAuthors, useGetCourses } from './services';
+import { useSelector } from 'react-redux';
+
 import { Navigate, Route, Routes } from 'react-router-dom';
+
 import Login from './components/Login/Login';
 import Registration from './components/Registration/Registration';
 import CreateCours from './components/CreateCourse/CreateCourse';
+import { Header } from './components/Header/Header';
+import EmptyCourseList from './components/EmptyCourseList/EmptyCourseList';
+import Courses from './components/Courses/Courses';
+import CourseInfo from './components/CourseInfo/CourseInfo';
+import { RootState } from './store/rootReducer';
 
 function App() {
 	// Check if token exists in localStorage
 	const token = localStorage.getItem('token');
+
+	useGetCourses();
+	useGetAuthors();
+
+	// const courses = [];
+	const courses = useSelector((state: RootState) => state?.courses);
 
 	return (
 		<>
@@ -22,10 +33,10 @@ function App() {
 					<Route
 						path='/courses'
 						element={
-							!list || !list.length ? (
+							!courses || !courses.length ? (
 								<EmptyCourseList />
 							) : (
-								<Courses coursesList={list} />
+								<Courses coursesList={courses} />
 							)
 						}
 					/>

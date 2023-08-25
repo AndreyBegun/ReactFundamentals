@@ -1,6 +1,9 @@
-import { mockedAuthorsList } from '../constants';
+import { AuthorType } from 'src/store/authors/types';
 
-export const getAuthors = (authors) =>
+export const getAuthors = (
+	authors: string[],
+	authorsList: AuthorType[]
+): string[] =>
 	authors?.map(
-		(id) => `${mockedAuthorsList.find((author) => author.id === id).name} `
+		(id) => `${authorsList.find((author) => author.id === id)?.name} `
 	);

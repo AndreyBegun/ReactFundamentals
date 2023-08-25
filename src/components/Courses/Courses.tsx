@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import CourseCard from './components/CourseCard/CourseCard';
 import { getAuthors } from 'src/helpers/getAuthors';
 import Button from 'src/common/Button/Button';
@@ -6,6 +6,8 @@ import SearchBar from './components/SearchBar/SearchBar';
 import styles from './Courses.module.css';
 import { BTN_ADD_COURSE } from 'src/constants';
 import { Link } from 'react-router-dom';
+import { RootState } from 'src/store/rootReducer';
+import { useSelector } from 'react-redux';
 
 interface Course {
 	id: string;
@@ -20,8 +22,14 @@ interface CoursesProps {
 	coursesList: Course[];
 }
 const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
-	const [courses, setCourses] = useState(coursesList);
+	const [courses, setCourses] = useState([]);
 	const [searchInputText, setSearchInputText] = useState('');
+
+	const authorsList = useSelector((state: RootState) => state?.authors);
+
+	useEffect(() => {
+		setCourses(coursesList);
+	}, [coursesList]);
 
 	const onSearchInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
 		setSearchInputText(e.target.value);
@@ -33,12 +41,8 @@ const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
 		} else {
 			serchRes = coursesList.filter(
 				(course) =>
-					course.title
-						.toLocaleLowerCase()
-						.includes(searchInputText.toLocaleLowerCase()) ||
-					course.id
-						.toLocaleLowerCase()
-						.includes(searchInputText.toLocaleLowerCase())
+					course.title.toLowerCase().includes(searchInputText.toLowerCase()) ||
+					course.id.toLowerCase().includes(searchInputText.toLowerCase())
 			);
 		}
 		return setCourses(serchRes);
@@ -62,7 +66,7 @@ const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
 						id={course.id}
 						title={course.title}
 						description={course.description}
-						authors={getAuthors(course.authors)}
+						authors={getAuthors(course.authors, authorsList).toString()}
 						duration={course.duration}
 						creationDate={course.creationDate}
 					/>
