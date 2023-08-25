@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { saveCoursesAction } from './store/courses/actions';
 import { saveUserDataAction } from './store/user/actions';
-
-const token = localStorage.getItem('token');
+import { saveAuthorsAction } from './store/authors/actions';
 
 export function useGetCourses() {
+	const token = localStorage.getItem('token');
 	const dispatch = useDispatch();
 	useEffect(() => {
 		fetch('http://localhost:4000/courses/all', {
@@ -25,7 +25,29 @@ export function useGetCourses() {
 	}, []);
 }
 
+export function useGetAuthors() {
+	const token = localStorage.getItem('token');
+	const dispatch = useDispatch();
+	useEffect(() => {
+		fetch('http://localhost:4000/authors/all', {
+			method: 'GET',
+			headers: {
+				Authorization: token,
+			},
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				dispatch(saveAuthorsAction(data.result)); // Set user information in store
+			})
+			.catch((error) => {
+				console.error('Error fetching user:', error);
+			});
+		// }
+	}, []);
+}
+
 export function useGetUser() {
+	const token = localStorage.getItem('token');
 	const dispatch = useDispatch();
 
 	useEffect(() => {

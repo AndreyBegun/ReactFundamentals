@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 
-import { useGetCourses } from './services';
+import { useGetAuthors, useGetCourses } from './services';
 import { useSelector } from 'react-redux';
 
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -20,9 +20,11 @@ function App() {
 	const token = localStorage.getItem('token');
 
 	useGetCourses();
+	useGetAuthors();
 
 	// const courses = [];
 	const courses = useSelector((state: RootState) => state?.courses);
+
 	return (
 		<>
 			<Header />

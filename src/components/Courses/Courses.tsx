@@ -6,6 +6,8 @@ import SearchBar from './components/SearchBar/SearchBar';
 import styles from './Courses.module.css';
 import { BTN_ADD_COURSE } from 'src/constants';
 import { Link } from 'react-router-dom';
+import { RootState } from 'src/store/rootReducer';
+import { useSelector } from 'react-redux';
 
 interface Course {
 	id: string;
@@ -22,6 +24,8 @@ interface CoursesProps {
 const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
 	const [courses, setCourses] = useState([]);
 	const [searchInputText, setSearchInputText] = useState('');
+
+	const authorsList = useSelector((state: RootState) => state?.authors);
 
 	useEffect(() => {
 		setCourses(coursesList);
@@ -62,7 +66,7 @@ const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
 						id={course.id}
 						title={course.title}
 						description={course.description}
-						authors={getAuthors(course.authors)}
+						authors={getAuthors(course.authors, authorsList).toString()}
 						duration={course.duration}
 						creationDate={course.creationDate}
 					/>
