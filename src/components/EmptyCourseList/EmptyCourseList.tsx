@@ -11,11 +11,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/rootReducer';
 
 type UserData = {
-	email: string;
-	id: string;
-	name: string;
-	password: string;
-	role: string;
+	email?: string;
+	id?: string;
+	name?: string;
+	password?: string;
+	role?: string;
 };
 
 const EmptyCourseList: React.FC = () => {

@@ -1,15 +1,29 @@
-import { UserAction, UserType, userActionTypes } from './types';
+import { createSlice } from '@reduxjs/toolkit';
+import { getUserThunk } from './thunk';
+import { UserState } from './types';
 
-const initUserState = {} as UserType;
+const initialState: UserState | null = {
+	name: '',
+	email: '',
+	password: '',
+	role: '',
+	id: '',
+};
 
-export function userReducer(state = initUserState, action: UserAction) {
-	switch (action.type) {
-		case userActionTypes.SAVE_USER:
+const userReducer = createSlice({
+	name: 'user',
+	initialState,
+	reducers: {
+		dellUser: () => {
+			return null;
+		},
+	},
+	extraReducers: (builder) => {
+		builder.addCase(getUserThunk.fulfilled, (state, action) => {
 			return action.payload;
-		case userActionTypes.DELETE_USER:
-			return {};
+		});
+	},
+});
 
-		default:
-			return state;
-	}
-}
+export const { dellUser } = userReducer.actions;
+export default userReducer.reducer;

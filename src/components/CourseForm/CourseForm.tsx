@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './CreateCourse.module.css';
+import styles from './CourseForm.module.css';
 import {
 	ADD_AUTHORS,
 	ADD_DESCRIPTION,
@@ -14,9 +14,9 @@ import { useNavigate } from 'react-router-dom';
 import AuthorsItem from './components/AuthorItem/AuthorItem';
 import { getAuthors } from 'src/helpers/getAuthors';
 import generateRandomId from 'src/helpers/generateRandomId';
-import { addNewCourseAction } from 'src/store/courses/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/rootReducer';
+import { saveCourse } from 'src/store/courses/reducer';
 
 interface CoursAddFormData {
 	title: string;
@@ -25,7 +25,7 @@ interface CoursAddFormData {
 	authors: string[];
 }
 
-const CreateCours = () => {
+const CourseForm = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const authorsState = useSelector((state: RootState) => state?.authors);
@@ -89,7 +89,7 @@ const CreateCours = () => {
 
 		if (Object.keys(validationErrors).length === 0) {
 			dispatch(
-				addNewCourseAction({
+				saveCourse({
 					...formValue,
 					id: generateRandomId(),
 					creationDate: getFormattedDate(),
@@ -97,33 +97,6 @@ const CreateCours = () => {
 			);
 			navigate('/courses');
 		}
-		// registration user request
-		// if (Object.keys(validationErrors).length === 0) {
-		// 	try {
-		// 		const response = await fetch('http://localhost:4000//courses/add', {
-		// 			method: 'POST',
-		// 			headers: {
-		// 				'Content-Type': 'application/json',
-		// 			},
-		// 			body: JSON.stringify(formValue),
-		// 		});
-
-		// 		if (response.ok) {
-		// 			setSuccessMessage(
-		// 				'Registration successful! Redirecting to login page...'
-		// 			);
-		// 			setTimeout(() => {
-		// 				// redirect on login page after 2 seconds
-		// 				navigate('/courses');
-		// 			}, 2000);
-		// 		} else {
-		// 			const responseData = await response.json();
-		// 			setFormErrors({ server: responseData.errors });
-		// 		}
-		// 	} catch (error) {
-		// 		console.error('An error occurred:', error);
-		// 	}
-		// }
 	};
 	return (
 		<div className={styles.page}>
@@ -201,4 +174,4 @@ const CreateCours = () => {
 	);
 };
 
-export default CreateCours;
+export default CourseForm;

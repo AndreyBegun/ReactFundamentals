@@ -10,6 +10,9 @@ import {
 	REGISTRATION,
 	REGISTRATION_TEXT,
 } from 'src/constants';
+import { login } from 'src/services';
+import { getUserThunk } from 'src/store/user/thunk';
+import { store } from 'src/store/rootReducer';
 
 interface FormData {
 	email: string;
@@ -56,17 +59,12 @@ const Login = () => {
 			setLoading(true);
 			// Login API call
 			try {
-				const response = await fetch('http://localhost:4000/login', {
-					method: 'POST',
-					body: JSON.stringify(formValue),
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				const response = await login(formValue);
 
 				if (response.ok) {
 					const data = await response.json();
 					localStorage.setItem('token', data.result); // Save token to localStorage
+					store.dispatch(getUserThunk());
 					navigate('/courses'); // Redirect to Courses page using useNavigate
 				} else {
 					// Handle API error here

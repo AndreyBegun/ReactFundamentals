@@ -8,7 +8,7 @@ import trash from '../../../../assets/trash.svg';
 import generateRandomId from 'src/helpers/generateRandomId';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/rootReducer';
-import { addAuthorAction } from 'src/store/authors/actions';
+import { addAuthor } from 'src/store/authors/reducer';
 
 interface AuthorsItemProps {
 	onAddAuthor: (id: string) => void;
@@ -35,7 +35,7 @@ const AuthorsItem: FC<AuthorsItemProps> = ({ onAddAuthor, onDeleteAuthor }) => {
 		}
 		setError(validationError);
 		if (!validationError) {
-			dispatch(addAuthorAction({ name: inputValue, id: generateRandomId() }));
+			dispatch(addAuthor({ name: inputValue, id: generateRandomId() }));
 			setInputValue('');
 		}
 	};

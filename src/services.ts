@@ -1,72 +1,60 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { saveCoursesAction } from './store/courses/actions';
-import { saveUserDataAction } from './store/user/actions';
-import { saveAuthorsAction } from './store/authors/actions';
+import { API_URL } from './constants';
 
-export function useGetCourses() {
-	const token = localStorage.getItem('token');
-	const dispatch = useDispatch();
-	useEffect(() => {
-		fetch('http://localhost:4000/courses/all', {
-			method: 'GET',
-			headers: {
-				Authorization: token,
-			},
+export async function login(formValue) {
+	return fetch(`${API_URL}/login`, {
+		method: 'POST',
+		body: JSON.stringify(formValue),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+}
+export async function getCourses() {
+	let courses = null;
+	await fetch(`${API_URL}/courses/all`, {
+		method: 'GET',
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			courses = data.result;
 		})
-			.then((response) => response.json())
-			.then((data) => {
-				dispatch(saveCoursesAction(data.result)); // Set user information in store
-			})
-			.catch((error) => {
-				console.error('Error fetching user:', error);
-			});
-		// }
-	}, []);
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return courses;
 }
 
-export function useGetAuthors() {
-	const token = localStorage.getItem('token');
-	const dispatch = useDispatch();
-	useEffect(() => {
-		fetch('http://localhost:4000/authors/all', {
-			method: 'GET',
-			headers: {
-				Authorization: token,
-			},
+export async function getAuthors() {
+	let authors = null;
+	await fetch(`${API_URL}/authors/all`, {
+		method: 'GET',
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			authors = data.result;
 		})
-			.then((response) => response.json())
-			.then((data) => {
-				dispatch(saveAuthorsAction(data.result)); // Set user information in store
-			})
-			.catch((error) => {
-				console.error('Error fetching user:', error);
-			});
-		// }
-	}, []);
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return authors;
 }
 
-export function useGetUser() {
+export async function getUser() {
 	const token = localStorage.getItem('token');
-	const dispatch = useDispatch();
-
-	useEffect(() => {
-		if (token) {
-			// Fetch user information using the token
-			fetch('http://localhost:4000/users/me', {
-				method: 'GET',
-				headers: {
-					Authorization: token,
-				},
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					// save userData to redux state
-					dispatch(saveUserDataAction(data?.result));
-				})
-				.catch((error) => {
-					console.error('Error fetching user:', error);
-				});
-		}
-	}, [token]);
+	let user = null;
+	// Fetch user information using the token
+	await fetch(`${API_URL}/users/me`, {
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			user = data.result;
+		})
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return user;
 }

@@ -6,6 +6,7 @@ import getCourseDuration from 'src/helpers/getCourseDuration';
 import { Link } from 'react-router-dom';
 import DeleteCourseButton from 'src/common/DeleteCourseButton/DeleteCourseButton';
 import EditCourseButton from 'src/common/EditCourseButton/EditCourseButton';
+import { useIsAdmin } from 'src/helpers/isAdmin';
 
 interface CourseCardProps {
 	id?: string;
@@ -23,34 +24,41 @@ const CourseCard: React.FC<CourseCardProps> = ({
 	authors,
 	duration,
 	creationDate,
-}) => (
-	<li className={styles.courseCard}>
-		<div className={styles.descriptionBlock}>
-			<div className={styles.descriptionBlockTitle}>{title}</div>
-			<div>{description}</div>
-		</div>
-		<div className={styles.infoBlock}>
-			<div>
-				<span className={styles.infoBlockTitle}>{AUTHORS}</span>
-				<span>{authors.toString()}</span>
+}) => {
+	const isAdmin = useIsAdmin();
+	return (
+		<li className={styles.courseCard}>
+			<div className={styles.descriptionBlock}>
+				<div className={styles.descriptionBlockTitle}>{title}</div>
+				<div>{description}</div>
 			</div>
-			<div>
-				<span className={styles.infoBlockTitle}>{DURATION}</span>
-				<span>{getCourseDuration(duration)}</span>
+			<div className={styles.infoBlock}>
+				<div>
+					<span className={styles.infoBlockTitle}>{AUTHORS}</span>
+					<span>{authors.toString()}</span>
+				</div>
+				<div>
+					<span className={styles.infoBlockTitle}>{DURATION}</span>
+					<span>{getCourseDuration(duration)}</span>
+				</div>
+				<div>
+					<span className={styles.infoBlockTitle}>{CREATED}</span>
+					<span>{creationDate}</span>
+				</div>
+				<div className={styles.infoBlockButtons}>
+					<Link to={`/courses/${id}`}>
+						<Button buttonText={BTN_SHOW_COURSE} />
+					</Link>
+					{isAdmin && (
+						<>
+							<DeleteCourseButton id={id} />
+							<EditCourseButton id={id} />
+						</>
+					)}
+				</div>
 			</div>
-			<div>
-				<span className={styles.infoBlockTitle}>{CREATED}</span>
-				<span>{creationDate}</span>
-			</div>
-			<div className={styles.infoBlockButtons}>
-				<Link to={`/courses/${id}`}>
-					<Button buttonText={BTN_SHOW_COURSE} />
-				</Link>
-				<DeleteCourseButton id={id} />
-				<EditCourseButton id={id} />
-			</div>
-		</div>
-	</li>
-);
+		</li>
+	);
+};
 
 export default CourseCard;

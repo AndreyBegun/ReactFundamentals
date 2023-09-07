@@ -8,6 +8,7 @@ import { BTN_ADD_COURSE } from 'src/constants';
 import { Link } from 'react-router-dom';
 import { RootState } from 'src/store/rootReducer';
 import { useSelector } from 'react-redux';
+import { useIsAdmin } from 'src/helpers/isAdmin';
 
 interface Course {
 	id: string;
@@ -26,6 +27,7 @@ const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
 	const [searchInputText, setSearchInputText] = useState('');
 
 	const authorsList = useSelector((state: RootState) => state?.authors);
+	const isAdmin = useIsAdmin();
 
 	useEffect(() => {
 		setCourses(coursesList);
@@ -55,9 +57,11 @@ const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
 					onInputChange={onSearchInputChangeHandler}
 					onSearch={onSerchHandler}
 				/>
-				<Link to='/courses/add'>
-					<Button buttonText={BTN_ADD_COURSE} />
-				</Link>
+				{isAdmin && (
+					<Link to='/courses/add'>
+						<Button buttonText={BTN_ADD_COURSE} />
+					</Link>
+				)}
 			</div>
 			<ul>
 				{courses?.map((course) => (
