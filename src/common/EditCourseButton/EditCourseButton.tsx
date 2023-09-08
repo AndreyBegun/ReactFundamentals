@@ -6,9 +6,13 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const EditCourseButton: React.FC<ButtonProps> = ({ id, ...rest }) => {
-	const handleEditCours = () => alert('edit course');
+	// const handleEditCours = () => alert('edit course');
 	return (
-		<button className={styles.button} onClick={handleEditCours} {...rest}>
+		<button
+			className={styles.button}
+			// onClick={handleEditCours}
+			{...rest}
+		>
 			<img src={editIcon} alt='delete-button' />
 		</button>
 	);

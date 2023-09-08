@@ -1,23 +1,29 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { AuthorType } from './types';
-import { getAuthorsThunk } from './thunk';
+import { addAuthorThunk, delAuthorThunk, getAuthorsThunk } from './thunk';
 
-const initCoursesState = [] as AuthorType[];
+const initAuthorsState = [] as AuthorType[];
 
 const authorsReducer = createSlice({
 	name: 'authors',
-	initialState: initCoursesState,
+	initialState: initAuthorsState,
 	reducers: {
-		addAuthor: (state, action: PayloadAction<AuthorType>) => {
-			return [...state, action.payload];
+		dellAuthors: () => {
+			return initAuthorsState;
 		},
 	},
 	extraReducers: (builder) => {
 		builder.addCase(getAuthorsThunk.fulfilled, (state, action) => {
 			return action.payload;
 		});
+		builder.addCase(addAuthorThunk.fulfilled, (state, action) => {
+			return [...state, action.payload];
+		});
+		builder.addCase(delAuthorThunk.fulfilled, (state, action) => {
+			return state.filter((author) => author.id === action.meta.arg);
+		});
 	},
 });
 
-export const { addAuthor } = authorsReducer.actions;
+export const { dellAuthors } = authorsReducer.actions;
 export default authorsReducer.reducer;

@@ -52,7 +52,10 @@ const CourseCard: React.FC<CourseCardProps> = ({
 					{isAdmin && (
 						<>
 							<DeleteCourseButton id={id} />
-							<EditCourseButton id={id} />
+
+							<Link to={`/courses/update/${id}`}>
+								<EditCourseButton id={id} />
+							</Link>
 						</>
 					)}
 				</div>

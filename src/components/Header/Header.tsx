@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, store } from 'src/store/rootReducer';
 import { getUserThunk } from 'src/store/user/thunk';
 import { dellUser } from 'src/store/user/reducer';
+import { logout } from 'src/services';
+import { dellAuthors } from 'src/store/authors/reducer';
+import { dellCourses } from 'src/store/courses/reducer';
 
 export const Header: React.FC = () => {
 	const token = localStorage.getItem('token');
@@ -22,14 +25,19 @@ export const Header: React.FC = () => {
 	const ifNotLoginPage =
 		location.pathname !== '/login' && location.pathname !== '/registration';
 
-	const handleLogout = () => {
-		localStorage.removeItem('token'); // Remove token from localStorage
-		dispatch(dellUser()); // Remove user data from stor
-		// TODO:
-		// dispatch(dellCourses());
-		// dispatch(dellAuthors());
-
-		navigate('/login'); // Navigate to /login page
+	const handleLogout = async () => {
+		try {
+			const res = await logout();
+			if (res.ok) {
+				localStorage.removeItem('token'); // Remove token from localStorage
+				dispatch(dellUser()); // Remove user data from stor
+				dispatch(dellCourses()); // Remove Courses data from stor
+				dispatch(dellAuthors()); // Remove Authurs data from stor
+				navigate('/login'); // Navigate to /login page
+			}
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
