@@ -1,18 +1,12 @@
 import React from 'react';
 import editIcon from '../../assets/editIcon.svg';
 import styles from './EditCourseButton.module.css';
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-	id: string;
-}
 
-const EditCourseButton: React.FC<ButtonProps> = ({ id, ...rest }) => {
-	// const handleEditCours = () => alert('edit course');
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+const EditCourseButton: React.FC<ButtonProps> = ({ ...rest }) => {
 	return (
-		<button
-			className={styles.button}
-			// onClick={handleEditCours}
-			{...rest}
-		>
+		<button className={styles.button} {...rest}>
 			<img src={editIcon} alt='delete-button' />
 		</button>
 	);

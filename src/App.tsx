@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -12,19 +12,12 @@ import { Header } from './components/Header/Header';
 import EmptyCourseList from './components/EmptyCourseList/EmptyCourseList';
 import Courses from './components/Courses/Courses';
 import CourseInfo from './components/CourseInfo/CourseInfo';
-import { RootState, store } from './store/rootReducer';
+import { RootState } from './store/rootReducer';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import { getAuthorsThunk } from './store/authors/thunk';
-import { getCoursesThunk } from './store/courses/thunk';
 
 function App() {
 	// Check if token exists in localStorage
 	const token = localStorage.getItem('token');
-	const { dispatch } = store;
-	useEffect(() => {
-		token && dispatch(getAuthorsThunk());
-		token && dispatch(getCoursesThunk());
-	}, [token]);
 
 	const courses = useSelector((state: RootState) => state?.courses);
 
@@ -36,11 +29,7 @@ function App() {
 					<Route
 						path='/courses'
 						element={
-							!courses || !courses.length ? (
-								<EmptyCourseList />
-							) : (
-								<Courses coursesList={courses} />
-							)
+							!courses || !courses.length ? <EmptyCourseList /> : <Courses />
 						}
 					/>
 				)}
@@ -65,7 +54,12 @@ function App() {
 				<Route path='/registration' element={<Registration />} />
 				<Route path='/login' element={<Login />} />
 
-				<Route path='*' element={<Navigate to='/courses' />} />
+				<Route
+					path='*'
+					element={
+						token ? <Navigate to='/courses' /> : <Navigate to='/login' />
+					}
+				/>
 			</Routes>
 		</>
 	);

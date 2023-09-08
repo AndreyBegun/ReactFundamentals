@@ -64,8 +64,8 @@ const Login = () => {
 				if (response.ok) {
 					const data = await response.json();
 					localStorage.setItem('token', data.result); // Save token to localStorage
-					store.dispatch(getUserThunk());
-					navigate('/courses'); // Redirect to Courses page using useNavigate
+					data && store.dispatch(getUserThunk());
+					data && navigate('/courses'); // Redirect to Courses page using useNavigate
 				} else {
 					// Handle API error here
 					console.error('Login failed');

@@ -17,7 +17,6 @@ import { useSelector } from 'react-redux';
 import { RootState, store } from 'src/store/rootReducer';
 import { addCourseThunk, updateCourseThunk } from 'src/store/courses/thunk';
 import { CoursAddFormData } from 'src/store/courses/types';
-import { updateCourse } from 'src/services';
 
 const CourseForm = () => {
 	const { courseId } = useParams();

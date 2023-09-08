@@ -6,27 +6,28 @@ import SearchBar from './components/SearchBar/SearchBar';
 import styles from './Courses.module.css';
 import { BTN_ADD_COURSE } from 'src/constants';
 import { Link } from 'react-router-dom';
-import { RootState } from 'src/store/rootReducer';
+import { RootState, store } from 'src/store/rootReducer';
 import { useSelector } from 'react-redux';
 import { useIsAdmin } from 'src/helpers/isAdmin';
+import { getAuthorsThunk } from 'src/store/authors/thunk';
+import { getCoursesThunk } from 'src/store/courses/thunk';
 
-interface Course {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
-}
+// interface Course {
+// 	id: string;
+// 	title: string;
+// 	description: string;
+// 	creationDate: string;
+// 	duration: number;
+// 	authors: string[];
+// }
 
-interface CoursesProps {
-	coursesList: Course[];
-}
-const Courses: React.FC<CoursesProps> = ({ coursesList }) => {
+const Courses: React.FC = () => {
 	const [courses, setCourses] = useState([]);
 	const [searchInputText, setSearchInputText] = useState('');
 
+	const coursesList = useSelector((state: RootState) => state?.courses);
 	const authorsList = useSelector((state: RootState) => state?.authors);
+
 	const isAdmin = useIsAdmin();
 
 	useEffect(() => {

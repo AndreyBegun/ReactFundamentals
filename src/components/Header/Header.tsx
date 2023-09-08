@@ -11,6 +11,8 @@ import { dellUser } from 'src/store/user/reducer';
 import { logout } from 'src/services';
 import { dellAuthors } from 'src/store/authors/reducer';
 import { dellCourses } from 'src/store/courses/reducer';
+import { getAuthorsThunk } from 'src/store/authors/thunk';
+import { getCoursesThunk } from 'src/store/courses/thunk';
 
 export const Header: React.FC = () => {
 	const token = localStorage.getItem('token');
@@ -20,6 +22,8 @@ export const Header: React.FC = () => {
 	const user = useSelector((state: RootState) => state?.user);
 	useEffect(() => {
 		token && store.dispatch(getUserThunk());
+		token && store.dispatch(getAuthorsThunk());
+		token && store.dispatch(getCoursesThunk());
 	}, [token]);
 
 	const ifNotLoginPage =
