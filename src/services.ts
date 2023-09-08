@@ -1,72 +1,176 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { saveCoursesAction } from './store/courses/actions';
-import { saveUserDataAction } from './store/user/actions';
-import { saveAuthorsAction } from './store/authors/actions';
+import { API_URL } from './constants';
+import { CoursAddFormData } from './store/courses/types';
 
-export function useGetCourses() {
+// User service
+export async function login(formValue) {
+	return fetch(`${API_URL}/login`, {
+		method: 'POST',
+		body: JSON.stringify(formValue),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+}
+export async function logout() {
 	const token = localStorage.getItem('token');
-	const dispatch = useDispatch();
-	useEffect(() => {
-		fetch('http://localhost:4000/courses/all', {
-			method: 'GET',
-			headers: {
-				Authorization: token,
-			},
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				dispatch(saveCoursesAction(data.result)); // Set user information in store
-			})
-			.catch((error) => {
-				console.error('Error fetching user:', error);
-			});
-		// }
-	}, []);
+	return fetch(`${API_URL}/logout`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: token,
+		},
+	});
 }
 
-export function useGetAuthors() {
+export async function getUser() {
 	const token = localStorage.getItem('token');
-	const dispatch = useDispatch();
-	useEffect(() => {
-		fetch('http://localhost:4000/authors/all', {
-			method: 'GET',
-			headers: {
-				Authorization: token,
-			},
+	let user = null;
+	// Fetch user information using the token
+	await fetch(`${API_URL}/users/me`, {
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			user = data.result;
 		})
-			.then((response) => response.json())
-			.then((data) => {
-				dispatch(saveAuthorsAction(data.result)); // Set user information in store
-			})
-			.catch((error) => {
-				console.error('Error fetching user:', error);
-			});
-		// }
-	}, []);
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return user;
 }
 
-export function useGetUser() {
+// Courses service
+export async function getCourses() {
+	let courses = null;
+	await fetch(`${API_URL}/courses/all`, {
+		method: 'GET',
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			courses = data.result;
+		})
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return courses;
+}
+export async function addCourse(formValue: CoursAddFormData) {
 	const token = localStorage.getItem('token');
-	const dispatch = useDispatch();
+	let course = null;
+	await fetch(`${API_URL}/courses/add`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: token,
+		},
+		body: JSON.stringify(formValue),
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			course = data.result;
+		})
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return course;
+}
+export async function dellCourse(courseId: string) {
+	const token = localStorage.getItem('token');
+	let course = null;
+	await fetch(`${API_URL}/courses/${courseId}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: token,
+		},
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			course = data.result;
+		})
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return course;
+}
+export async function updateCourse(
+	formValue: CoursAddFormData,
+	courseId: string
+) {
+	const token = localStorage.getItem('token');
+	let course = null;
+	await fetch(`${API_URL}/courses/${courseId}`, {
+		method: 'PUT',
+		body: JSON.stringify(formValue),
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: token,
+		},
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			course = data.result;
+		})
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return course;
+}
 
-	useEffect(() => {
-		if (token) {
-			// Fetch user information using the token
-			fetch('http://localhost:4000/users/me', {
-				method: 'GET',
-				headers: {
-					Authorization: token,
-				},
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					// save userData to redux state
-					dispatch(saveUserDataAction(data?.result));
-				})
-				.catch((error) => {
-					console.error('Error fetching user:', error);
-				});
-		}
-	}, [token]);
+// Authors service
+export async function getAuthors() {
+	let authors = null;
+	await fetch(`${API_URL}/authors/all`, {
+		method: 'GET',
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			authors = data.result;
+		})
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return authors;
+}
+export async function addAuthor(name: string) {
+	const token = localStorage.getItem('token');
+	let author = null;
+	await fetch(`${API_URL}/authors/add`, {
+		method: 'POST',
+		body: JSON.stringify({ name: name }),
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: token,
+		},
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			author = data.result;
+		})
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return author;
+}
+export async function delAuthor(id: string) {
+	const token = localStorage.getItem('token');
+	let author = null;
+	await fetch(`${API_URL}/authors/${id}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: token,
+		},
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			author = data.result;
+		})
+		.catch((error) => {
+			console.error('Error fetching user:', error);
+		});
+	return author;
 }

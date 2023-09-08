@@ -1,16 +1,15 @@
 import React from 'react';
 import deleteIcon from '../../assets/deleteIcon.svg';
 import styles from './DeleteButton.module.css';
-import { useDispatch } from 'react-redux';
-import { deleteCourseAction } from 'src/store/courses/actions';
+import { dellCourseThunk } from 'src/store/courses/thunk';
+import { store } from 'src/store';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	id: string;
 }
 
 const DeleteCourseButton: React.FC<ButtonProps> = ({ id, ...rest }) => {
-	const dispatch = useDispatch();
-	const handleDeleteCours = () => dispatch(deleteCourseAction(id));
+	const handleDeleteCours = () => store.dispatch(dellCourseThunk(id));
 	return (
 		<button className={styles.button} onClick={handleDeleteCours} {...rest}>
 			<img src={deleteIcon} alt='delete-button' />

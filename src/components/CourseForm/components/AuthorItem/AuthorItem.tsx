@@ -5,10 +5,9 @@ import Button from 'src/common/Button/Button';
 import Input from 'src/common/Input/Input';
 import pluss from '../../../../assets/pluss.svg';
 import trash from '../../../../assets/trash.svg';
-import generateRandomId from 'src/helpers/generateRandomId';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'src/store/rootReducer';
-import { addAuthorAction } from 'src/store/authors/actions';
+import { useSelector } from 'react-redux';
+import { RootState, store } from 'src/store/rootReducer';
+import { addAuthorThunk } from 'src/store/authors/thunk';
 
 interface AuthorsItemProps {
 	onAddAuthor: (id: string) => void;
@@ -16,7 +15,6 @@ interface AuthorsItemProps {
 }
 
 const AuthorsItem: FC<AuthorsItemProps> = ({ onAddAuthor, onDeleteAuthor }) => {
-	const dispatch = useDispatch();
 	const authors = useSelector((state: RootState) => state?.authors);
 
 	const [inputValue, setInputValue] = useState('');
@@ -35,7 +33,7 @@ const AuthorsItem: FC<AuthorsItemProps> = ({ onAddAuthor, onDeleteAuthor }) => {
 		}
 		setError(validationError);
 		if (!validationError) {
-			dispatch(addAuthorAction({ name: inputValue, id: generateRandomId() }));
+			store.dispatch(addAuthorThunk(inputValue));
 			setInputValue('');
 		}
 	};

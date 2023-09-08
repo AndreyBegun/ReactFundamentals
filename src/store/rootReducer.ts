@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { CourseType } from './courses/types';
-import { coursesReducer } from './courses/reducer';
-import { userReducer } from './user/reducer';
+import coursesReducer from './courses/reducer';
+import userReducer from './user/reducer';
 import { UserType } from './user/types';
-import { authorsReducer } from './authors/reducer';
+import authorsReducer from './authors/reducer';
 import { AuthorType } from './authors/types';
 
 export interface RootState {
@@ -18,4 +18,5 @@ export const store = configureStore({
 		authors: authorsReducer,
 		user: userReducer,
 	},
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });

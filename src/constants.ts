@@ -36,3 +36,5 @@ export const ADD_DURATION = 'duration';
 export const ADD_AUTHORS = 'authors';
 export const ADD_AUTHOR_NAME = 'author name';
 export const ADD_BTN_CRT_AUTHOR = 'create author';
+
+export const API_URL = 'http://localhost:4000';

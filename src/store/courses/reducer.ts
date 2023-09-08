@@ -1,22 +1,45 @@
-import { CourseType, CoursesAction, CoursesActionTypes } from './types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { CourseType } from './types';
+import {
+	addCourseThunk,
+	dellCourseThunk,
+	getCoursesThunk,
+	updateCourseThunk,
+} from './thunk';
 
 const initCoursesState = [] as CourseType[];
 
-export function coursesReducer(
-	state = initCoursesState,
-	action: CoursesAction
-) {
-	switch (action.type) {
-		case CoursesActionTypes.SAVE_COURSES:
+const coursesReducer = createSlice({
+	name: 'courses',
+	initialState: initCoursesState,
+	reducers: {
+		dellCourses: () => {
+			return initCoursesState;
+		},
+	},
+	extraReducers: (builder) => {
+		builder.addCase(getCoursesThunk.fulfilled, (state, action) => {
 			return action.payload;
-
-		case CoursesActionTypes.ADD_COURSE:
+		});
+		builder.addCase(addCourseThunk.fulfilled, (state, action) => {
 			return [...state, action.payload];
-
-		case CoursesActionTypes.DELETE_COURSE:
-			return state.filter((course) => course.id !== action.payload);
-
-		default:
-			return state;
-	}
-}
+		});
+		builder.addCase(dellCourseThunk.fulfilled, (state, action) => {
+			return state.filter((course) => course.id !== action.meta.arg);
+		});
+		builder.addCase(updateCourseThunk.fulfilled, (state, action) => {
+			return state.map((course) => {
+				if (course.id === action.meta.arg.id) {
+					return {
+						...course,
+						...action.payload,
+					};
+				} else {
+					return course;
+				}
+			});
+		});
+	},
+});
+export const { dellCourses } = coursesReducer.actions;
+export default coursesReducer.reducer;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styles from './CreateCourse.module.css';
+import React, { useEffect, useState } from 'react';
+import styles from './CourseForm.module.css';
 import {
 	ADD_AUTHORS,
 	ADD_DESCRIPTION,
@@ -10,24 +10,17 @@ import Input from 'src/common/Input/Input';
 import TextArea from 'src/common/TextArea/TextArea';
 import Button from 'src/common/Button/Button';
 import getCourseDuration from 'src/helpers/getCourseDuration';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AuthorsItem from './components/AuthorItem/AuthorItem';
 import { getAuthors } from 'src/helpers/getAuthors';
-import generateRandomId from 'src/helpers/generateRandomId';
-import { addNewCourseAction } from 'src/store/courses/actions';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'src/store/rootReducer';
+import { useSelector } from 'react-redux';
+import { RootState, store } from 'src/store/rootReducer';
+import { addCourseThunk, updateCourseThunk } from 'src/store/courses/thunk';
+import { CoursAddFormData } from 'src/store/courses/types';
 
-interface CoursAddFormData {
-	title: string;
-	description: string;
-	duration: number | undefined;
-	authors: string[];
-}
-
-const CreateCours = () => {
+const CourseForm = () => {
+	const { courseId } = useParams();
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const authorsState = useSelector((state: RootState) => state?.authors);
 
 	const [formValue, setfFormValue] = useState<CoursAddFormData>({
@@ -36,13 +29,32 @@ const CreateCours = () => {
 		[ADD_DURATION]: undefined,
 		[ADD_AUTHORS]: [],
 	});
+
+	const updatedCourse = useSelector(
+		(state: RootState) =>
+			state?.courses.find((course) => course.id === courseId)
+	);
+	useEffect(() => {
+		if (courseId) {
+			const { title, description, duration, authors } = updatedCourse;
+			setfFormValue({
+				[ADD_TITLE]: title,
+				[ADD_DESCRIPTION]: description,
+				[ADD_DURATION]: duration,
+				[ADD_AUTHORS]: [...authors],
+			});
+		}
+	}, [courseId]);
+
 	const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setfFormValue((prevData) => ({ ...prevData, [name]: value }));
 	};
+
 	const handleCancel = () => navigate('/courses');
+
 	const handleAddAuthor = (id: string) => {
 		const authorsList = formValue[ADD_AUTHORS];
 		authorsList.push(id);
@@ -61,14 +73,14 @@ const CreateCours = () => {
 		}));
 	};
 
-	function getFormattedDate() {
-		const today = new Date();
-		const day = String(today.getDate()).padStart(2, '0');
-		const month = String(today.getMonth() + 1).padStart(2, '0');
-		const year = today.getFullYear();
+	// function getFormattedDate() {
+	// 	const today = new Date();
+	// 	const day = String(today.getDate()).padStart(2, '0');
+	// 	const month = String(today.getMonth() + 1).padStart(2, '0');
+	// 	const year = today.getFullYear();
 
-		return `${day}/${month}/${year}`;
-	}
+	// 	return `${day}/${month}/${year}`;
+	// }
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -88,43 +100,26 @@ const CreateCours = () => {
 		setFormErrors(validationErrors);
 
 		if (Object.keys(validationErrors).length === 0) {
-			dispatch(
-				addNewCourseAction({
-					...formValue,
-					id: generateRandomId(),
-					creationDate: getFormattedDate(),
-				})
-			);
+			courseId
+				? store.dispatch(
+						updateCourseThunk({
+							formData: { ...formValue, duration: +formValue.duration },
+							id: courseId,
+						})
+				  )
+				: // ? await updateCourse(
+				  // 		{ ...formValue, duration: +formValue.duration },
+				  // 		courseId
+				  //   ).then((res) => console.log(res))
+				  store.dispatch(
+						addCourseThunk({ ...formValue, duration: +formValue.duration })
+				  );
 			navigate('/courses');
 		}
-		// registration user request
-		// if (Object.keys(validationErrors).length === 0) {
-		// 	try {
-		// 		const response = await fetch('http://localhost:4000//courses/add', {
-		// 			method: 'POST',
-		// 			headers: {
-		// 				'Content-Type': 'application/json',
-		// 			},
-		// 			body: JSON.stringify(formValue),
-		// 		});
-
-		// 		if (response.ok) {
-		// 			setSuccessMessage(
-		// 				'Registration successful! Redirecting to login page...'
-		// 			);
-		// 			setTimeout(() => {
-		// 				// redirect on login page after 2 seconds
-		// 				navigate('/courses');
-		// 			}, 2000);
-		// 		} else {
-		// 			const responseData = await response.json();
-		// 			setFormErrors({ server: responseData.errors });
-		// 		}
-		// 	} catch (error) {
-		// 		console.error('An error occurred:', error);
-		// 	}
-		// }
 	};
+
+	const saveButton = courseId ? 'update course' : 'create course';
+
 	return (
 		<div className={styles.page}>
 			<h3 className={styles.title}>Course edit/create page</h3>
@@ -194,11 +189,11 @@ const CreateCours = () => {
 
 				<div className={styles.footer}>
 					<Button buttonText='cancel' onClick={handleCancel} />
-					<Button buttonText='create course' type='submit' />
+					<Button buttonText={saveButton} type='submit' />
 				</div>
 			</form>
 		</div>
 	);
 };
 
-export default CreateCours;
+export default CourseForm;
